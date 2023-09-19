@@ -39,7 +39,7 @@ With these simple steps we can form logically two end-to-end test cases: <b> Pic
 
 Why this is not the best idea to form test cases? We should NOT test several things with one test case. Why not? Because if Feature 1 fails, we probably dont know about sanity of F2 and F3, because we dont get there. 
 
-We should test all three features separately and <i>independently</i>. That means we can run each test case without others. Because test steps 2 and 3 requires step 1, it is a <i>precondition</i> as well as feature to test. Hence, we define three test case, where two of them has Test Step 1 as precondition, i.e. put it in Test Setup in Robot code. 
+We should test all three features separately and <i>independently</i>. That means we can run each test case without others. Because test steps 2 and 3 requires step 1, it is a <i>precondition</i> as well as a feature to test. Hence, we define three test cases, where two of them has Test Step 1 as precondition, i.e. put it in Test Setup in Robot code. 
 
 Robot Framework code:
 
@@ -55,8 +55,14 @@ Robot Framework code:
         [Setup]    Pick Item To Purchase
         Checkout Item
 
-<i>Postcondition</i> for <b> Pick Item </b> is that there is item in basket. However, other two test cases may not leave the item there. That's why we need Teardown part to empty basket. That could be implemented in a way, that it does not fail if the basket is empty already, so we can use it as suite teardown. Then it initializes the basket empty even if test cases 2 of 3 fails to do that and allows the other cases to be run. Suite setup/teardown could look like this: 
+<i>Postcondition</i> for <b> Pick Item </b> is that there is item in basket. However, the other two test cases may not leave the item there. That's why we need Teardown part to empty basket. That could be implemented in a way, that it does not fail if the basket is empty already, so we can use it as suite teardown. Then it initializes the basket empty even if test cases 2 of 3 fails to do that and allows the other cases to be run. Suite setup/teardown could look like this: 
 
+    *** Settings ***
+    Suite Setup        Open Browser To Webshop
+    Suite Teardown     Empty Basket
 
+## Summary
 
-Running this kind of test cases, we can clearly pinpoint which feature fails. After
+Running this kind of test cases, we can clearly pinpoint which feature fails. After getting the fix, the corresponding test case indicates whether the function fix is working. However, if a setup part of a test case is failing, we notice from the result log that the feature corresponding the case may not be failing, but it is not run at all. 
+
+This kind of dividing test cases in small independent units and thinking of the role of the setups and teardowns is significant when the test suites and run reports become massive. Although long chaining of test steps can not be avoided always, the careful design of test case architecture is seen sometimes undervalued. 
