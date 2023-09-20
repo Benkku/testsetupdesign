@@ -4,7 +4,7 @@ About designing good test automation cases, setups and teardowns. Examples made 
 ## Good functional test case
 
 - tests only one thing that is said in test case name
-- tests should be independent (Also terms idempotent and isolated are used). Initialization using setup/teardown
+- tests should be <i>independent</i> (Also terms <i>idempotent</i> and <i>isolated</i> are used). Initialization using setup/teardown
 - Sometimes dependencies between tests cannot be avoided.
   - For example, it can take too much time to initialize all tests separately.
   - Never have long chains of dependent tests.
